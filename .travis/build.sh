@@ -22,7 +22,7 @@ if [ -z "${TRAVIS_OS_NAME+x}" ]; then
 fi
 
 if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
-    brew install protobuf libarchive hg
+    brew install protobuf libarchive
     hg clone http://hg.openjdk.java.net/jdk8/jdk8
     cd jdk8
     chmod 755 get_source.sh
