@@ -26,7 +26,9 @@ if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
     hg clone http://hg.openjdk.java.net/jdk8/jdk8
     cd jdk8
     chmod 755 get_source.sh
-    ./get_source.sh
+    # For some reason, some of these exit abnormally the first time through (timeout?).
+    ./get_source.sh || ./get_source.sh
+    chmod +x configure
     ./configure
     make
     ls
