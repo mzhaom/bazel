@@ -22,7 +22,14 @@ if [ -z "${TRAVIS_OS_NAME+x}" ]; then
 fi
 
 if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
-    brew install protobuf libarchive
+    brew install protobuf libarchive hg
+    hg clone http://hg.openjdk.java.net/jdk8/jdk8
+    cd jdk8
+    chmod 755 get_source.sh
+    ./get_source.sh
+    ./configure
+    make
+    ls
 else
     sudo apt-get update -qq
     sudo apt-get install -y protobuf-compiler libarchive-dev netcat-traditional

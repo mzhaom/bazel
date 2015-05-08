@@ -1,9 +1,8 @@
-notifications:
-  email:
-    - bazel-dev@googlegroups.com
-
 # Allow sudo for running apt-get.
 sudo: required
+os:
+  - linux
+  - osx
 language: cpp
 compiler:
   - clang
