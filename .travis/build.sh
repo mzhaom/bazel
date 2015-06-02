@@ -23,8 +23,9 @@ fi
 
 if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
     brew install protobuf libarchive
-    which javac
-    ls -l $(which javac)
+    /usr/libexec/java_home 1.7+
+    export JAVA_HOME=$(/usr/libexec/java_home 1.7+)
+    ls -l $JAVA_HOME
 else
     sudo apt-get update -qq
     sudo apt-get install -y protobuf-compiler libarchive-dev netcat-traditional
