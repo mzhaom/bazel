@@ -36,7 +36,7 @@ CXXSTD="c++0x"
 
 unset JAVA_TOOL_OPTIONS
 
-JAVA_VERSION=${JAVA_VERSION:-"1.8"}
+JAVA_VERSION=${JAVA_VERSION:-"1.7"}
 PLATFORM="$(uname -s | tr 'A-Z' 'a-z')"
 ARCHIVE_CFLAGS=${ARCHIVE_CFLAGS:-""}
 LDFLAGS=${LDFLAGS:-""}
@@ -140,8 +140,8 @@ darwin)
   JNILIB="libunix.dylib"
   MD5SUM="md5"
   if [[ -z "$JAVA_HOME" ]]; then
-    JAVA_HOME="$(/usr/libexec/java_home -v 1.8+ 2> /dev/null)" \
-      || fail "Could not find JAVA_HOME, please ensure a JDK (version 1.8+) is installed."
+    JAVA_HOME="$(/usr/libexec/java_home -v 1.7+ 2> /dev/null)" \
+      || fail "Could not find JAVA_HOME, please ensure a JDK (version 1.7+) is installed."
   fi
   PROTOC=${PROTOC:-third_party/protobuf/protoc.darwin}
 
@@ -216,8 +216,8 @@ JAVAC="${JAVA_HOME}/bin/javac"
     || fail "JAVA_HOME ($JAVA_HOME) is not a path to a working JDK."
 
 JAVAC_VERSION=$("${JAVAC}" -version 2>&1)
-[[ "$JAVAC_VERSION" =~ ^"javac 1"\.([89]|[1-9][0-9]).*$ ]] \
-    || fail "JDK version is lower than 1.8, please set \$JAVA_HOME."
+[[ "$JAVAC_VERSION" =~ ^"javac 1"\.([789]|[1-9][0-9]).*$ ]] \
+    || fail "JDK version is lower than 1.7, please set \$JAVA_HOME."
 
 JAR="${JAVA_HOME}/bin/jar"
 
