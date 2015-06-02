@@ -23,20 +23,14 @@ fi
 
 if [[ $TRAVIS_OS_NAME = 'osx' ]]; then
     brew install protobuf libarchive
-    hg clone http://hg.openjdk.java.net/jdk8/jdk8
-    cd jdk8
-    chmod 755 get_source.sh
-    # For some reason, some of these exit abnormally the first time through (timeout?).
-    ./get_source.sh || ./get_source.sh
-    chmod +x configure
-    ./configure
-    make
-    ls
+    which javac
+    ls -l $(which javac)
 else
     sudo apt-get update -qq
     sudo apt-get install -y protobuf-compiler libarchive-dev netcat-traditional
     sudo update-alternatives --set nc /bin/nc.traditional
     export JAVA_HOME=/usr/lib/jvm/java-8-oracle
     export JAVA_OPTS="-Xmx3000m"
-    ./bootstrap_test.sh all
 fi
+
+./bootstrap_test.sh all
