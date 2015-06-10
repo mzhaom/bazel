@@ -63,7 +63,8 @@ public class BazelPythonSemantics implements PythonSemantics {
         ruleContext.getActionOwner(),
         common.getExecutable(),
         STUB_TEMPLATE,
-        ImmutableList.of(Substitution.of("%main%", main)),
+        ImmutableList.of(Substitution.of("%main%", main),
+                         Substitution.of("%python_interpreter%", common.getPythonInterpreter())),
         true));
   }
 

@@ -327,6 +327,14 @@ public final class PyCommon {
     return executable;
   }
 
+  public String getPythonInterpreter() {
+    if (getVersion() == PythonVersion.PY3ONLY || getVersion() == PythonVersion.PY3) {
+      return "python3";
+    } else {
+      return "python2";
+    }
+  }
+
   public Map<PathFragment, Artifact> getConvertedFiles() {
     return convertedFiles;
   }
