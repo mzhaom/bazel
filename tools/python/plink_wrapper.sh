@@ -2,4 +2,9 @@
 echo $@
 INTERPRETER=$1
 shift
-exec $INTERPRETER tools/python/plink.py --python-binary "/usr/bin/$INTERPRETER -ESs" $@
+if [[ $INTERPRETER == "python2" ]]; then
+    PLINK=plink.py
+else
+    PLINK=plink3.py
+fi
+exec $INTERPRETER tools/python/$PLINK --python-binary "/usr/bin/$INTERPRETER -ESs" $@
