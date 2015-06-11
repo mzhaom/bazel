@@ -13,6 +13,8 @@
 // limitations under the License.
 package com.google.devtools.build.lib.rules.python;
 
+import static com.google.devtools.build.lib.packages.ImplicitOutputsFunction.fromTemplates;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -36,6 +38,7 @@ import com.google.devtools.build.lib.collect.nestedset.NestedSetBuilder;
 import com.google.devtools.build.lib.collect.nestedset.Order;
 import com.google.devtools.build.lib.packages.Rule;
 import com.google.devtools.build.lib.packages.Type;
+import com.google.devtools.build.lib.packages.ImplicitOutputsFunction.SafeImplicitOutputsFunction;
 import com.google.devtools.build.lib.rules.cpp.CppFileTypes;
 import com.google.devtools.build.lib.rules.test.InstrumentedFilesCollector;
 import com.google.devtools.build.lib.rules.test.InstrumentedFilesCollector.LocalMetadataCollector;
@@ -57,6 +60,8 @@ import java.util.UUID;
  */
 public final class PyCommon {
 
+  public static final SafeImplicitOutputsFunction PY_BINARY_DEPLOY_PAR = fromTemplates("%{name}.par");
+
   private static final LocalMetadataCollector METADATA_COLLECTOR = new LocalMetadataCollector() {
     @Override
     public void collectMetadataArtifacts(Iterable<Artifact> artifacts,
@@ -68,7 +73,7 @@ public final class PyCommon {
   private final RuleContext ruleContext;
 
   private Artifact executable = null;
-
+  
   private NestedSet<Artifact> transitivePythonSources;
 
   private PythonVersion sourcesVersion;
@@ -96,21 +101,22 @@ public final class PyCommon {
   public PythonVersion getVersion() {
     return version;
   }
-
+  
   public void initBinary(List<Artifact> srcs) {
     Preconditions.checkNotNull(version);
 
     validatePackageName();
     executable = ruleContext.createOutputArtifact();
+    
     if (this.version == PythonVersion.PY2AND3) {
       // TODO(bazel-team): we need to create two actions
       ruleContext.ruleError("PY2AND3 is not yet implemented");
     }
 
     filesToBuild = NestedSetBuilder.<Artifact>stableOrder()
-        .addAll(srcs)
-        .add(executable)
-        .build();
+  		.addAll(srcs)
+   		.add(executable)
+   		.build();
 
     if (ruleContext.hasErrors()) {
       return;
@@ -341,6 +347,10 @@ public final class PyCommon {
 
   public NestedSet<Artifact> getFilesToBuild() {
     return filesToBuild;
+  }
+
+  public NestedSet<Artifact> getTransitivePythonSources() {
+	return transitivePythonSources;
   }
 
   public boolean usesSharedLibraries() {

@@ -14,11 +14,16 @@
 
 package com.google.devtools.build.lib.bazel.rules.python;
 
+import static com.google.devtools.build.lib.packages.Attribute.attr;
+import static com.google.devtools.build.lib.packages.Attribute.ConfigurationTransition.HOST;
+import static com.google.devtools.build.lib.packages.Type.LABEL;
+
 import com.google.devtools.build.lib.analysis.RuleDefinition;
 import com.google.devtools.build.lib.analysis.RuleDefinitionEnvironment;
 import com.google.devtools.build.lib.bazel.rules.BazelBaseRuleClasses;
 import com.google.devtools.build.lib.bazel.rules.python.BazelPyRuleClasses.PyBinaryBaseRule;
 import com.google.devtools.build.lib.packages.RuleClass;
+import com.google.devtools.build.lib.rules.python.PyCommon;
 
 /**
  * Rule definition for the {@code py_binary} rule.
@@ -33,6 +38,9 @@ public final class BazelPyBinaryRule implements RuleDefinition {
     <code>main.py</code>, then your name should be <code>main</code>.
     <!-- #END_BLAZE_RULE.NAME --> */
     return builder
+        .setImplicitOutputsFunction(PyCommon.PY_BINARY_DEPLOY_PAR)
+        .add(attr("$plink", LABEL).cfg(HOST).exec()
+        	 .value(env.getLabel("//tools/python:plink")))
         .build();
   }
 
